@@ -37,7 +37,7 @@
 
 	并且在 `webpack` 的设计理念中，所有的静态资源都是模块，所以借助强大的 `loader` 系统几乎可以加载任意类型的静态资源，并且对模块的输出结果可以做非常精细的控制，根据不同的配置可以达到任意想要的结果。  
 
-	```
+	```js
 	loaders: [{
 	    test: /.js$/,
 	    loader: 'jsx-loader?harmony'
@@ -58,7 +58,7 @@
 
 	这是 `webpack` 配置文件中的 `loaders` 部分，其中，`test` 是正则匹配，匹配到的文件将使用相应的 `loader` 去解析，然后这些文件就成为了模块，可以在其它地方引用。比如：  
 
-	```
+	```js
 	// a.js
 	// 加载js
 	var login = require('./src/js/conf/login/login.js');
@@ -91,7 +91,7 @@
 
 	抛开现在流行的组件化解决方案，光以 `webpack` 的角度来看，如果模版，样式，脚本，都可以作为模块来引入，这就使得封装组件变的很简单。比如：  
 
-	```
+	```js
 	// 搜索组件
 	// js/component/search/index.js
 
@@ -109,7 +109,7 @@
 	```
 
 	使用：  
-	```
+	```js
 	// js/app.js
 	var searchComponent = require('js/component/search/index.js');
 
@@ -122,7 +122,7 @@
 	这样的开发方式无疑能够极大降低维护成本，当然，如果和现在流行的前端框架，如React、Vue结合起来实现组件化，代码组织会更加清晰，自由度也更高，展开讲又是一个大话题，按下不表。  
 
 	还是贴一下伪代码吧。。以 `Vue` 为例  
-	```
+	```js
 	// alert.vue
 
 	<template>
@@ -146,7 +146,7 @@
 	```
 
 	使用  
-	```
+	```js
 	// main.vue（同样是一个组件，可能被其它组件（如根组件）依赖）
 
 	<templeate>
@@ -214,7 +214,7 @@
 
 		以 GoH5 为例，把页面内引用的资源改为 `8080` 端口下对应的文件并加入 `http://localhost:8080/webpack-dev-server.js`，此时代码热更新已经生效：  
 
-		```
+		```html
 		<!DOCTYPE html>
 		<html>
 
@@ -272,7 +272,7 @@
 
 	线上代码的代理调试，借助 `host`，借助 `Fiddler`，借助 `wamp`，其实。。  
 
-	```
+	```js
 	// webpack.config.js
 	{
 	    devServer: {
@@ -288,7 +288,7 @@
 
 	当然，这样的代理不够灵活，而且不能代理html，但是如果借助本地的服务，我们可以这么做   
 
-	```
+	```js
 	// 先行配置host，可以手动，也可以像 `fd-server` 有个图形化界面，然后  
 	var koa = require('koa');
 	var proxy = require('koa-proxy');
