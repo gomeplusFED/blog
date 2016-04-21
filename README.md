@@ -12,3 +12,5 @@ blog下有两个分支，`master|dev` ，在写作文章时大家可以在 `dev`
 * [调试手机页面的方法](./2016-03/手机调试.md) -- by:luoye  
 
 * [webpack-workflow](./2016-04/webpack-workflow.md) -- by:luoye  
+
+* [use webpack in your node app](./2016-04/use webpack in your node app.md) -- by:luoye  
