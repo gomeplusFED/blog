@@ -199,7 +199,7 @@ webpack 动态 require
 
 	```js
 	// 获取正确的模块
-	var req = require.req("./routers", true, /\.js$/);
+	var req = require.context("./routers", true, /\.js$/);
 	var routers = rd.readFileFilterSync('./routers', /\.js/);
 	routers.forEach(function(item) {
 		// 使用包涵正确模块的已经被修改过的 `require` 去获取模块
