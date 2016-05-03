@@ -1,4 +1,4 @@
-APP内嵌H5通信框架 - [AppInterface](https://github.com/yanglang1987500/AppInterface) — 让JSBridge更简单一点
+APP内嵌H5通信框架[AppInterface](https://github.com/yanglang1987500/AppInterface) — 让JSBridge更简单一点
 ==================================================
 
 简介
@@ -6,7 +6,7 @@ APP内嵌H5通信框架 - [AppInterface](https://github.com/yanglang1987500/AppI
 
 基于安卓与H5实现的一个通过拦截H5请求与JSBridge的APP内嵌H5通信框架，纯REST风格，安卓基于注解与反射实现，类似于SpringMVC的Controller实现
 
-使用指南--安卓方面
+使用指南 — 安卓方面
 ----
 
 通过使用：
@@ -83,7 +83,7 @@ public void orderManage(Map<String,Object> params, final AppInterfaceCallback ca
 实测，Nexus4手机，框架初始化12个Controller，35个协议约35ms-70ms时间，转发请求耗时（不包括协议本身业务实现的耗时）为1ms，非常快！
 
 
-使用指南--H5方面
+使用指南 — H5方面
 ----
 
 ###H5主要通过AppInterface.js进行
