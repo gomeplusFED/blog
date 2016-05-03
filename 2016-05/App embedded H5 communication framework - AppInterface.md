@@ -30,6 +30,7 @@ function call(url){
 * `common`，与`www.google.com`一样，称为host地址；
 * `toast`，与`/query`一样，定位资源，称为path；
 * `msg`与`jsCallback`，url参数，其中`jsCallback`是H5传递给App的回调方法名称；
+
 这样，我们就实现了一个基本的通信方法。
 <br>
 然而这只是一个基本的实现，你肯定很快就发现这样实现很不优雅，回调方法都绑定在window对象下面，随着调用次数的增多如果不删除，垃圾方法会越来越多，而且这样直接暴露方法在window下其实既不优雅也不安全。<br>
