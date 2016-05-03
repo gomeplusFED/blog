@@ -14,3 +14,5 @@ blog下有两个分支，`master|dev` ，在写作文章时大家可以在 `dev`
 * [webpack-workflow](./2016-04/webpack-workflow.md) -- by:luoye  
 
 * [use webpack in your node app](./2016-04/use webpack in your node app.md) -- by:luoye  
+
+* [do you really understand how to write a countdown by javascript](./2016-04/do-you-really-understand-how-to-write-a-countdown-by-javascript.md) -- by: xiaojue
