@@ -16,3 +16,5 @@ blog下有两个分支，`master|dev` ，在写作文章时大家可以在 `dev`
 * [use webpack in your node app](./2016-04/use webpack in your node app.md) -- by:luoye  
 
 * [do you really understand how to write a countdown by javascript](./2016-04/do-you-really-understand-how-to-write-a-countdown-by-javascript.md) -- by: xiaojue
+
+* [App embedded H5 communication framework](./2016-05/App embedded H5 communication framework - AppInterface.md) -- by: yanglang
