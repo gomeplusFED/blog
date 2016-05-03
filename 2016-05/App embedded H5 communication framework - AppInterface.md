@@ -1,10 +1,35 @@
-APP内嵌H5通信框架[AppInterface](https://github.com/yanglang1987500/AppInterface) — 让JSBridge更简单一点
+[AppInterface](https://github.com/yanglang1987500/AppInterface) — 让JSBridge更简单一点
 ==================================================
 
 简介
 ----
 
-基于安卓与H5实现的一个通过拦截H5请求与JSBridge的APP内嵌H5通信框架，纯REST风格，安卓基于注解与反射实现，类似于SpringMVC的Controller实现
+事情起源于公司一个内部项目，App那边说要采用内嵌H5的形式来做，然而此前部门并没有一个成型的框架予以支持，于是上网搜集了一些关于App内嵌H5通信的资料，基于安卓与H5实现了一个通过拦截H5请求与JSBridge的框架，纯REST风格，安卓基于注解与反射实现，类似于SpringMVC的Controller实现
+
+在讨论如何使用这套框架之前，咱们先从简单的原理说起
+----
+从搜索到的结果来看，采用的技术无非就以下几种
+* 页面内嵌入一个iframe，通过修改iframe的src来让Webview拦截到来自网页的请求；
+* 修改页面的location.href，让Webview拦截到来自网页的请求；
+* 使用安卓的JSBridge；
+* 使用iOS的JavascriptCore（iOS7.0版本后可用）
+方案一应该是目前（或遗留项目）采用最多的方案，方案二是针对iOS9识别不到方案一而采用的打补丁方案，方案三与方案四应该是同级的，同时可以使用。<br>
+那么，我们先来讨论方案一，从描述上来看，用js实现其实很简单：
+```javascript
+function callApp(url){
+    var appIframe = doc.createElement('iframe');
+    appIframe.id = 'appInterfaceNativeFrame';
+    appIframe.style.display = 'none';
+    body.appendChild(appIframe);
+    appIframe.src = url;
+    }
+```
+其中，url内容由我们组织，比如：`gomeplus://common/toast?msg=弹个提示&jsCallback=TEMPORARYEVENT_1462255203268`，类似http请求一样，我们也将它分为三部分：
+* `gomeplus://`，与`http://`一样，称为协议；
+* `common`，与www.google.com一样，称为host地址；
+* `toast`，与/query一样，定位资源，称为path；
+* `msg`与`jsCallback`，url参数，其中jsCallback是H5传递给App的回调方法名称；
+这样，我们就实现了一个基本的通信方法。
 
 使用指南 — 安卓方面
 ----
