@@ -13,23 +13,65 @@
 * 修改页面的location.href，让Webview拦截到来自网页的请求；
 * 使用安卓的JSBridge；
 * 使用iOS的JavascriptCore（iOS7.0版本后可用）
+<br>
 方案一应该是目前（或遗留项目）采用最多的方案，方案二是针对iOS9识别不到方案一而采用的打补丁方案，方案三与方案四应该是同级的，同时可以使用。<br>
 那么，我们先来讨论方案一，从描述上来看，用js实现其实很简单：
 ```javascript
-function callApp(url){
+function call(url){
     var appIframe = doc.createElement('iframe');
     appIframe.id = 'appInterfaceNativeFrame';
     appIframe.style.display = 'none';
     body.appendChild(appIframe);
     appIframe.src = url;
-    }
+}
 ```
 其中，url内容由我们组织，比如：`gomeplus://common/toast?msg=弹个提示&jsCallback=TEMPORARYEVENT_1462255203268`，类似http请求一样，我们也将它分为三部分：
 * `gomeplus://`，与`http://`一样，称为协议；
-* `common`，与www.google.com一样，称为host地址；
-* `toast`，与/query一样，定位资源，称为path；
-* `msg`与`jsCallback`，url参数，其中jsCallback是H5传递给App的回调方法名称；
+* `common`，与`www.google.com`一样，称为host地址；
+* `toast`，与`/query`一样，定位资源，称为path；
+* `msg`与`jsCallback`，url参数，其中`jsCallback`是H5传递给App的回调方法名称；
 这样，我们就实现了一个基本的通信方法。
+<br>
+然而这只是一个基本的实现，你肯定很快就发现这样实现很不优雅，回调方法都绑定在window对象下面，随着调用次数的增多如果不删除，垃圾方法会越来越多，而且这样直接暴露方法在window下其实既不优雅也不安全。<br>
+所以重构之后，加入了事件订阅与发布机制，在修改iframe.src之前先订阅一个事件，事件名称根据时间缀生成（比如上文中的`TEMPORARYEVENT_1462255203268`），然后修改src发送请求，App在接收到请求后处理该url，提取host/path进行业务处理，最后根据回调事件名称通过Webview.loadUrl("javascript:try%7Bwindow.AppInterface.notify('TEMPORARYEVENT_1462255203268'%2C%7Bdata%7D)%3B%7Dcatch(e)%7B%7D")进行事件发布即可。<br>
+但是很快App同事说在iOS9上识别不到请求，于是把方案二补充进来：
+```javascript
+function doCall(url,force){
+    var doc = document,body = doc.body;
+    if(AppInterface.isIOS9) {
+        //IOS9特殊处理
+        window.location = url;
+    } else {
+        if(!appIframe){
+            appIframe = doc.createElement('iframe');
+            appIframe.id = 'appInterfaceNativeFrame';
+            appIframe.style.display = 'none';
+            body.appendChild(appIframe);
+        }
+        appIframe.src = url;
+    }
+}
+```
+<br>
+然后新需求来了，需要设定超时时间，若App在给定时间内未回调的话，需要告知调用者调用超时了，所以补充一个定时器：
+```javascript
+if( timeout !== 0 ){
+    var timer = setTimeout(function(){
+        var endTime = new Date().getTime();
+        //此处针对外部浏览器呼起APP做兼容。非浏览器或非ios9，应该通知  未进入后台，超时等于timeout，也应该通知
+        if(!(endTime - parseInt(eventName.split('_')[1]) > (timeout+20)) || !(that.isBrowser && that.isIOS9)){
+            that.notify(eventName,packageData(null,false,'客户端未响应'));
+        }
+        clearTimeout(timer);
+        timer = null;
+    }, timeout);
+}
+```
+定时器这里也有一些可以聊的，那就是普通浏览器内针对App的唤醒！不过此处就不多说了，因为我们的目的只是通信，而非唤醒（因为唤醒也有一个很大的坑，由于iOS8之后会弹一个“是否使用****应用打开链接？”的确认框，所以目前在iOS8以上版本我们仍然解决不了用户未安装时引导用户去下载页的需求）<br>
+
+你以为这样就完了么？还有一堆坑等着去填呢！~不过目前来说至少已经比较优雅的封装了H5这块的调用功能了。<br>
+接下来看看AppInterface是如何实现的吧！<br><br>
+
 
 使用指南 — 安卓方面
 ----
