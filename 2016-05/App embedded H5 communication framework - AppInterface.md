@@ -1,3 +1,4 @@
+<!--
 [AppInterface](https://github.com/yanglang1987500/AppInterface) — 让JSBridge更简单一点
 ==================================================
 
@@ -331,3 +332,4 @@ $('a').on('click',function(){
 ```
 
 <br><br><br>AppInterface最终的目标就是简化开发，提升开发效率与通信效率。目前只实现了安卓而没有实现iOS，一来是因为我iOS水平一般，就不班门弄斧了；二来iOS官方尚未提供注解实现，所以要实现智能配置比较别扭。不过AppInterface.js是支持iOS的，只需要iOS监听Webview的拦截请求方法或是通过JavascriptCore给Webview注入一个实现了call(url)方法的名为ApplicationInterface的javascript对象即可，只不过协议的实现仍需要自己解析url并回调罢了，没有框架的安卓实现那么简洁而已。
+-->
