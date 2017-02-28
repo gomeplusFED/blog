@@ -17,7 +17,7 @@
 //使用setInterval实现一个5的倒计时。
 (function() {
     var time = 5;
-    var p = document.getElementsById("time");
+    var p = document.getElementById("time");
     var set = setInterval(function() {
         time--;
         p.innerHTML = time;
