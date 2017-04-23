@@ -96,7 +96,7 @@ fs.readdirSync('node_modules')
         return ['.bin'].indexOf(x) === -1;
     })
     .forEach(function(mod) {
-        nodeModules[mod] = 'commonjs ' + mod;
+         nodeModules [mod] =`require(\'${mod}\')`;
     });
 
 module.exports = {
